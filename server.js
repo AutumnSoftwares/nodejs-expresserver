@@ -3,22 +3,31 @@ import express from 'express';
 import Stripe from 'stripe';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import cors from 'cors'; // ✅ Import CORS
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Stripe client
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-08-16',
-});
+// ------------------------
+// CORS Setup
+// ------------------------
+app.use(cors({
+  origin: process.env.FRONTEND_URL, // Base44 frontend URL
+  methods: ['GET', 'POST'],
+}));
 
 // Parse JSON bodies
 app.use(express.json());
 
 // Parse raw body for webhook verification
 app.use('/webhook', bodyParser.raw({ type: 'application/json' }));
+
+// Stripe client
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2023-08-16',
+});
 
 // ------------------------
 // 1️⃣ Create Checkout Session
@@ -64,7 +73,6 @@ app.post('/webhook', (req, res) => {
   switch (event.type) {
     case 'checkout.session.completed':
       console.log('✅ Checkout session completed', event.data.object);
-      // TODO: update user subscription in DB
       break;
     case 'invoice.payment_succeeded':
       console.log('✅ Payment succeeded', event.data.object);
