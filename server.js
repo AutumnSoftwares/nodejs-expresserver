@@ -14,9 +14,12 @@ const port = process.env.PORT || 3000;
 // 1️⃣ CORS MUST come BEFORE JSON parsing
 // ------------------------
 app.use(cors({
-  origin: process.env.FRONTEND_URL, // Base44 URL, e.g. https://your-base44-app.com
-  methods: ['GET', 'POST'],
-  credentials: true,
+  origin: [
+    'https://app-forge-d339e5a8.base44.app', // production
+    'https://preview--app-forge-d339e5a8.base44.app' // Base44 preview
+  ],
+  methods: ['GET','POST'],
+  credentials: true
 }));
 
 // Parse JSON bodies
