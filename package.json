@@ -1,20 +1,20 @@
 {
   "name": "nodejs-expresserver",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node.js Express server for Stripe integration with Base44",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AutumnSoftwares/nodejs-expresserver.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Your Name",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/AutumnSoftwares/nodejs-expresserver/issues"
   },
