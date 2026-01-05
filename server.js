@@ -37,8 +37,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 // 2️⃣ Create Checkout Session
 // ------------------------
 app.post('/create-checkout-session', async (req, res) => {
-  const { priceId } = req.body;
-  if (!priceId) return res.status(400).json({ error: 'Missing priceId' });
+  const { tier } = req.body; // Expect 'starter', 'pro', or 'enterprise'
+
+  // Map tier names to Stripe Price IDs from environment variables
+  const priceMap = {
+    starter: process.env.STRIPE_STARTER_PRICE_ID,
+    pro: process.env.STRIPE_PRO_PRICE_ID,
+    enterprise: process.env.STRIPE_ENTERPRISE_PRICE_ID
+  };
+
+  const priceId = priceMap[tier];
+  if (!priceId) return res.status(400).json({ error: 'Invalid tier' });
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -48,12 +57,14 @@ app.post('/create-checkout-session', async (req, res) => {
       success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
     });
+
     res.json({ sessionId: session.id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to create session' });
   }
 });
+
 
 // ------------------------
 // 3️⃣ Webhook Endpoint
