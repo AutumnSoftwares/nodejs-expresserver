@@ -1,0 +1,28 @@
+{
+  "name": "nodejs-expresserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AutumnSoftwares/nodejs-expresserver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AutumnSoftwares/nodejs-expresserver/issues"
+  },
+  "homepage": "https://github.com/AutumnSoftwares/nodejs-expresserver#readme",
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "stripe": "^20.1.0"
+  }
+}
