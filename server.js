@@ -37,14 +37,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 // 2️⃣ Create Checkout Session
 // ------------------------
 app.post('/create-checkout-session', async (req, res) => {
-  const { tier } = req.body; // base44 sends { tier: "starter" }
-  
+  const { tier } = req.body; // frontend sends "starter", "pro", "enterprise"
+  if (!tier) return res.status(400).json({ error: 'Missing tier' });
+
+  // Map tier to actual price ID from environment variables
   const priceMap = {
     starter: process.env.STRIPE_STARTER_PRICE_ID,
     pro: process.env.STRIPE_PRO_PRICE_ID,
-    enterprise: process.env.STRIPE_ENTERPRISE_PRICE_ID
+    enterprise: process.env.STRIPE_ENTERPRISE_PRICE_ID,
   };
-  
+
   const priceId = priceMap[tier];
   if (!priceId) return res.status(400).json({ error: 'Invalid tier' });
 
@@ -62,6 +64,7 @@ app.post('/create-checkout-session', async (req, res) => {
     res.status(500).json({ error: 'Failed to create session' });
   }
 });
+
 
 
 // ------------------------
